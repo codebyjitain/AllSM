@@ -37,10 +37,9 @@ const ProductPreview = () => {
                 <div
                     key={item._id || index} 
                     onClick={(e) => handleClick(item._id, e)}
-                    className='bg-linear-to-r w-full p-2 flex items-center from-[#f5f7f6] to-[#f0f9f6] h-50 rounded-3xl'
-                >
-                    <div className='w-full flex'>
-                        <div className="w-1/3 flex items-center flex-col">
+                    className='bg-linear-to-r w-full p-2 flex items-center from-[#f5f7f6] to-[#f0f9f6] rounded-3xl'>
+                    <div className='w-full flex mt-2'>
+                        <div className="w-1/3 flex items-center flex-col justify-center">
                             <img
                                 className="w-[200px] mb-4 rounded-4xl"
                                 src={`http://localhost:3000/image/${item.productImage}`}
@@ -48,10 +47,11 @@ const ProductPreview = () => {
                             />
                         </div>
 
-                        <div className='w-1/3 p-5 flex flex-col justify-center gap-3'>
+                        <div className='w-1/3 p-5 flex flex-col gap-3'>
                             <h2 className='text-2xl font-bold'>{item.name}</h2>
                             <h3 className='text-xl'>₹ {item.price}</h3>
-                            <p className='text-md'>{item.description}</p>
+                            <p className='text-md h-30 overflow-hidden'>{item.description}</p>
+                            <h2>.....</h2>
                         </div>
 
                         

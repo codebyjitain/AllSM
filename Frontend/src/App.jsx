@@ -8,8 +8,8 @@ import OwnerLoginRegister from './pages/OwnerLoginRegister'
 import OwnerMiddleware from './middleware/OwnerMiddleware'
 import ProductPage from './pages/ProductPage'
 import UserCart from './pages/UserCart'
-import OAddProduct from './components/OwnerComponents/OAddProduct'
 import Owner from './pages/Owner'
+import OEditProductPage from './pages/OEditProductPage'
 
 const App = () => {
   return (
@@ -32,6 +32,12 @@ const App = () => {
           <UserMiddleware>
             <UserCart />
           </UserMiddleware>
+        } />
+
+        <Route path='/owner/editproduct/:id' element={
+          <OwnerMiddleware>
+            <OEditProductPage />
+          </OwnerMiddleware>
         } />
       </Routes>
     </div>

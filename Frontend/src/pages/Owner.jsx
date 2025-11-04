@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import OwnerSidebar from '../components/OwnerComponents/OwnerSidebar'
-import OAddProduct from '../components/OwnerComponents/OAddProduct';
-import OEditProduct from '../components/OwnerComponents/OEditProduct';
-import OViewProducts from '../components/OwnerComponents/OViewProducts';
-import ODeleteProduct from '../components/OwnerComponents/ODeleteProduct';
-import OSetStock from '../components/OwnerComponents/OSetStock';
-import OOrders from '../components/OwnerComponents/OOrders';
-import OPayments from '../components/OwnerComponents/OPayments';
-import OProfile from '../components/OwnerComponents/OProfile';
-import ONavbar from '../components/OwnerComponents/ONavbar';
+import OwnerSidebar from '../components/ownercomponents/OwnerSidebar'
+import OAddProduct from '../components/ownercomponents/OAddProduct';
+import OEditProduct from '../components/ownercomponents/OEditProduct';
+import OViewProducts from '../components/ownercomponents/OViewProducts';
+import ODeleteProduct from '../components/ownercomponents/ODeleteProduct';
+import OSetStock from '../components/ownercomponents/OSetStock';
+import OOrders from '../components/ownercomponents/OOrders';
+import OPayments from '../components/ownercomponents/OPayments';
+import OProfile from '../components/ownercomponents/OProfile';
+import ONavbar from '../components/ownercomponents/ONavbar';
 
 const Owner = () => {
   const [activeSection, setActiveSection] = useState('addProduct');

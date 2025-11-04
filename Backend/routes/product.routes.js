@@ -13,4 +13,7 @@ router.get('/', ProductControllers.getAllProducts);
 // GET /products/:id
 router.get('/:id', ProductControllers.getProductById);
 
+// PUT /products/update/:id
+router.put('/update/:id', upload.single('productImage'), ProductControllers.updateProduct);
+
 module.exports = router;
