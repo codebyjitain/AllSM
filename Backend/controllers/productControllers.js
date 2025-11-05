@@ -4,17 +4,28 @@ const Owner = require('../models/owner.models');
 
 // Create a new product
 const createProduct = async (req, res) => {
+    console.log(req.body)
     try {
-        const { name, description, price, ownertoken } = req.body;
+        const { name, description, price, ownertoken , type , quantity , otherNames } = req.body;
         const productImage = req.file ? req.file.filename : null;
 
-        if (!name || !description || !price || !productImage) {
+        if (!name || !description || !price || !productImage || !ownertoken || !type || !quantity) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
         // ✅ Fix JWT decoding field
         const decoded = jwt.verify(ownertoken, process.env.JWT_SECRET);
         const ownerId = decoded.ownerId;  // Correct key
+
+        // fix otherNames to be an array
+        let otherNamesArray = [];
+        if (otherNames) {
+            if (Array.isArray(otherNames)) {
+                otherNamesArray = otherNames;
+            } else if (typeof otherNames === 'string') {
+                otherNamesArray = otherNames.split(',').map(name => name.trim());
+            }
+        }
 
         // ✅ Create new product
         const newProduct = new Product({
@@ -23,7 +34,9 @@ const createProduct = async (req, res) => {
             price,
             productImage,
             owner: ownerId,
-            quantity: 1
+            quantity: quantity,
+            type: type,
+            otherNames: otherNamesArray
         });
 
         await newProduct.save();
@@ -77,15 +90,30 @@ const getProductById = async (req, res) => {
 
 // Update product by ID
 const updateProduct = async (req, res) => {
+    
     try {
         const { id } = req.params;
-        const { name, description, price } = req.body;
+        const { name, description, price , type , otherNames , quantity} = req.body;
+    
         const productImage = req.file ? req.file.filename : null;
+
+        // Simplify OtherNames
+        let otherNamesArray = [];
+        if (otherNames) {
+            if (Array.isArray(otherNames)) {
+                otherNamesArray = otherNames;
+            } else if (typeof otherNames === 'string') {
+                otherNamesArray = otherNames.split(',').map(name => name.trim());
+            }
+        }
 
         const updatedData = {
             name,
             description,
-            price
+            price,
+            otherNames: otherNamesArray,
+            type,
+            quantity
         };
 
         if (productImage) {

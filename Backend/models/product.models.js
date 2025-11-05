@@ -23,6 +23,14 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    type: {
+        type: String,
+        required: true
+    },
+    otherNames: {
+        type: [String],
+        default: []
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Owner',

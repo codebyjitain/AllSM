@@ -21,12 +21,12 @@ const OEditProduct = () => {
 
 
   return (
-    <div className='flex flex-wrap justify-center'>
+    <div className='flex flex-wrap justify-center bg-linear-to-r from-[#fefeff] rounded-2xl to-[#e1ebed] pt-10'>
       {status === 'loading' && <p>Loading products...</p>}
       {status === 'failed' && <p>Error: {error}</p>}
       {status === 'succeeded' &&
         items.map((product) => (
-          <div key={product._id} onClick={(e)=>handleClick(product._id,e)} className='w-[300px] h-[300px] bg-linear-to-r from-zinc-200 to-zinc-500 m-5 p-5 rounded-2xl flex flex-col items-center justify-center gap-3'>
+          <div key={product._id} onClick={(e)=>handleClick(product._id,e)} className='w-[300px] h-[300px] bg-zinc-500 m-5 p-5 rounded-2xl flex flex-col items-center justify-center gap-3'>
             <div>
               <img className='w-[200px] h-[200px] rounded-2xl' src={import.meta.env.VITE_BASE_URL + `/image/${product.productImage}`} alt="" />
             </div>

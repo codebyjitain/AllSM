@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import OwnerSidebar from '../components/ownercomponents/OwnerSidebar'
 import OAddProduct from '../components/ownercomponents/OAddProduct';
 import OEditProduct from '../components/ownercomponents/OEditProduct';
@@ -13,16 +13,19 @@ import ONavbar from '../components/ownercomponents/ONavbar';
 const Owner = () => {
   const [activeSection, setActiveSection] = useState('addProduct');
 
+  useEffect(() => {
+    const savedSection = localStorage.getItem('activeSection');
+    if (savedSection) {
+      setActiveSection(savedSection);
+    }
+  }, []);
+
   const renderSection = () => {
     switch (activeSection) {
       case 'addProduct':
         return <OAddProduct />;
       case 'editProduct':
         return <OEditProduct />; // Assume EditProduct is another component
-      case 'viewProducts':
-        return <OViewProducts />; // Assume ViewProducts is another component
-      case 'deleteProduct':
-        return <ODeleteProduct />; // Assume DeleteProduct is another component
       case 'setStock':
         return <OSetStock />; // Assume SetStock is another component
       case 'orders':

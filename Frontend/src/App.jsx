@@ -10,10 +10,13 @@ import ProductPage from './pages/ProductPage'
 import UserCart from './pages/UserCart'
 import Owner from './pages/Owner'
 import OEditProductPage from './pages/OEditProductPage'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const App = () => {
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path='/' element={
           <UserMiddleware>

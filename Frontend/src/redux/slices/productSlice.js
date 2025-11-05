@@ -12,8 +12,17 @@ export const getProductById = createAsyncThunk('products/getProductById', async 
     return response.data;
 });
 
-export const updateProduct = createAsyncThunk('products/updateProduct', async ({ id, updatedData }) => {
-    const response = await axios.put(import.meta.env.VITE_BASE_URL + `/products/update/${id}`, updatedData, {
+export const updateProduct = createAsyncThunk('products/updateProduct', async ({ id, formData }) => {
+    const response = await axios.put(import.meta.env.VITE_BASE_URL + `/products/update/${id}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+    return response.data;
+});
+
+export const addProduct = createAsyncThunk('products/addProduct', async (formData) => {
+    const response = await axios.post(import.meta.env.VITE_BASE_URL + '/products/create', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
@@ -32,9 +41,6 @@ const productSlice = createSlice({
     reducers: {
         setProducts(state, action) {
             state.items = action.payload;
-        },
-        addProduct(state, action) {
-            state.items.push(action.payload);
         },
     },
     extraReducers: (builder) => {
@@ -79,10 +85,22 @@ const productSlice = createSlice({
             .addCase(updateProduct.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
+            })
+            .addCase(addProduct.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(addProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.items.push(action.payload.product); // extract actual product
+            })
+            .addCase(addProduct.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
             });
     }
 });
 
-export const { setProducts, addProduct } = productSlice.actions;
+export const { setProducts, } = productSlice.actions;
 
 export default productSlice.reducer;
