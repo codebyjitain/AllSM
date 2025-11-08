@@ -2,8 +2,13 @@ import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { loginUser, registerUser } from '../redux/slices/userSlice';
 
 const UserLoginRegister = () => {
+
+    const dispatch = useDispatch();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -14,18 +19,23 @@ const UserLoginRegister = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/users/register', { name, email: registerEmail, password: registerPassword })
-            if (response.status === 201) {
-                console.log('Registration successful');
-                const data = await response.data;
-                const token = data.token;
-                localStorage.setItem('token', token);
-                navigate('/');
-            } else {
-                console.log('Registration failed');
-            }
+            const userData = {
+                name: name,
+                email: registerEmail,
+                password: registerPassword
+            };
+
+            dispatch(registerUser(userData))
+            
+            setName('');
+            setRegisterEmail('');
+            setRegisterPassword('');
+
+            toast.success('Registration successful! Please login.');
+            
         } catch (error) {
             console.error('Error during registration:', error);
+            toast.error('Registration failed. Please try again.');
         }
     }
 
@@ -33,18 +43,18 @@ const UserLoginRegister = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/users/login', { email, password })
-            if (response.status === 200) {
-                const data = await response.data;
-                const token = data.token;
-                localStorage.setItem('token', token);
-                navigate('/');
+            const loginData = {
+                email: email,
+                password: password
+            };
 
-            } else {
-                console.log('Login failed');
-            }
+            dispatch(loginUser(loginData))
+            
+            toast.success('Login successful!');
+
         } catch (error) {
             console.error('Error during login:', error);
+            toast.error('Login failed. Please check your credentials and try again.');
         }
     }
 

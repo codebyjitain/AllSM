@@ -23,7 +23,11 @@ const App = () => {
             <Home />
           </UserMiddleware>
         } />
-        <Route path='/login' element={<UserLoginRegister />} />
+        <Route path='/login' element={
+          <UserMiddleware>
+            <UserLoginRegister />
+          </UserMiddleware>
+        } />
         <Route path='/owner' element={
           <OwnerMiddleware>
             <Owner />

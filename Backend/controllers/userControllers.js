@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.models');
+const hashPassword = require('../utils/bcrypt-utils').hashPassword
+const verifyPassword = require('../utils/bcrypt-utils').verifyPassword
 
 
 const userLoginController = async (req, res) => {
@@ -8,15 +10,22 @@ const userLoginController = async (req, res) => {
     try {
         const user = await User.findOne({ email });
 
-        if (!user || user.password !== password) {
+        
+
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const isPasswordValid = await verifyPassword(password, user.password);
+        if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         const token = jwt.sign({ userId: user._id, email: user.email }, process.env.JWT_SECRET);
-
         res.status(200).json({ message: 'Login successful', token, user });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
+        console.error(error);
     }
 }
 
@@ -29,14 +38,16 @@ const userRegisterController = async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        const newUser = new User({ name, email, password });
+        const hashedPassword = await hashPassword(password);
+
+        const newUser = new User({ name, email, password : hashedPassword });
         await newUser.save();
 
-        const token = jwt.sign({ userId: newUser._id, email: newUser.email }, process.env.JWT_SECRET);
-
-        res.status(201).json({ message: 'User registered successfully', token, user: newUser });
+        
+        res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
+        
     }
 }
 
@@ -74,4 +85,20 @@ const getCartItemsController = async (req, res) => {
     }
 }
 
-module.exports = { userLoginController, userRegisterController, addToCartController , getCartItemsController};
+// verify user controller
+const verifyUserController = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.userId)-password;
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'User verified', user });
+    } catch (error) {
+        res.status(401).json({ message: 'Invalid token', error: error.message });
+    }
+}
+
+module.exports = { userLoginController, userRegisterController, addToCartController , getCartItemsController , verifyUserController};

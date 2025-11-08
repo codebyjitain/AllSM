@@ -14,4 +14,7 @@ router.post('/addtocart', userController.addToCartController );
 
 // Get cart items route
 router.get('/cart', userController.getCartItemsController );
+
+// Verify user route
+router.get('/verify', userController.verifyUserController );
 module.exports = router;
