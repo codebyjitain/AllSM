@@ -1,50 +1,74 @@
-import React, { use, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { verifyUser } from '/src/redux/slices/userSlice';
+import React, { useEffect, useState } from 'react'
 
-const Navbar = () => {
-    const user = useSelector((state) => state.user);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const [profileName, setProfileName] = useState('profile name')
+const Navbar = ({ setOpenSideBar, openSideBar }) => {
 
-    useEffect(() => {
-        dispatch(verifyUser(localStorage.getItem('token')));
-    }, [dispatch]);
+    // only for mobile
+    const [openMenu, setOpenMenu] = useState(false)
 
-    useEffect(() => {
-        setProfileName(user.userInfo ? user.userInfo.user.name : 'profile name');
-    }, [user.userInfo]);
 
-    const handleCart = (e) => {
-        e.preventDefault();
-        navigate('/cart');
-    }
+
     return (
-        <div className=' h-16 flex justify-between p-3 bg-[#eaf1f1] rounded-4xl'>
-            <div className='flex gap-5'>
-                <div className='bg-[#e4eaec] flex items-center p-3 rounded-4xl'>
-                    Logo
-                </div>
-                <div className='flex gap-3 items-center bg-white p-2 rounded-4xl'>
-                    <input placeholder='Search Product' className='p-2 border-none' type="text" />
-                    <input type="submit" className='bg-black text-white p-1 rounded-full' value="sea" />
-                </div>
+        <div className="h-16 flex items-center justify-between p-4 bg-[#eaf1f1] rounded-4xl w-full">
+
+            {/* ✅ Left Section (Menu + Logo) */}
+            <div className="flex items-center gap-4">
+                {/* Sidebar Button - Only Mobile */}
+                <button
+                    className="block md:hidden p-2 bg-blue-500 text-white rounded-xl"
+                    onClick={() => setOpenSideBar(!openSideBar)}
+                >
+                    ☰
+                </button>
+
+                {/* Logo */}
+                <h2 className="font-bold text-lg">Logo</h2>
             </div>
-            <div className='flex gap-5 items-center'>
-                <button className='p-2 bg-white rounded-4xl' onClick={(e)=> handleCart(e)}>Cart</button>
-                <button className='p-2 bg-white rounded-4xl'>Orders</button>
-                <div className='flex gap-2 items-center bg-white rounded-4xl'>
-                    <h2 className='p-2 capitalize'>{profileName}</h2>
-                    <div className='border border-[#e5e4e2] mx-2 rounded-4xl px-1' >
-                        {/* <img src="" alt="" /> */}
+
+            {/* ✅ Center (Greeting - visible on all screens) */}
+            <h2 className="text-lg capitalize flex items-center gap-1">
+                <input type="search" className='p-2 bg-white rounded-xl' placeholder='Search Here..' />
+                <h2 className='p-2 bg-white rounded-xl'>0</h2>
+            </h2>
+
+            {/* profile option */}
+            <div>
+
+                <div className="relative flex items-center gap-5">
+
+                    {/* DESKTOP BUTTONS */}
+                    <div className="hidden md:flex items-center gap-5">
+                        <button className="p-2 bg-white rounded-3xl">Cart</button>
+                        <button className="p-2 bg-white rounded-3xl">Orders</button>
+
+                        {/* Profile */}
+                        <div className="flex items-center gap-2 bg-white rounded-3xl px-3 py-2 cursor-pointer">
+                            <h2 className="capitalize">Profile Name</h2>
+                            <div className="border rounded-full px-2 py-1">O</div>
+                        </div>
                     </div>
+
+                    {/* MOBILE PROFILE ICON ONLY */}
+                    <div
+                        className="md:hidden bg-white p-2 rounded-full cursor-pointer"
+                        onClick={() => setOpenMenu(!openMenu)}
+                    >
+                        O
+                    </div>
+
+                    {/* MOBILE DROPDOWN PANEL */}
+                    {openMenu && (
+                        <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl w-40 p-3 flex flex-col gap-3 text-center md:hidden z-50">
+                            <button className="p-2 bg-gray-100 rounded-xl">Cart</button>
+                            <button className="p-2 bg-gray-100 rounded-xl">Orders</button>
+                            <button className="p-2 bg-gray-100 rounded-xl">Profile</button>
+                        </div>
+                    )}
+
                 </div>
             </div>
+
         </div>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;

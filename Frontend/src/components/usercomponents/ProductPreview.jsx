@@ -28,7 +28,7 @@ const ProductPreview = () => {
 
 
     return (
-        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 bg-[#eaf1f1] p-4 rounded-2xl md:grid-cols-1 lg:grid-cols-4 gap-4">
             {items.map((item,index) => (
                 <div
                     key={item.id || index}

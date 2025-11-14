@@ -1,47 +1,59 @@
 import React, { use, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts } from '../../redux/slices/productSlice.js'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchProducts } from '../../redux/slices/productSlice'
+
 
 const OEditProduct = () => {
-  const { items, status, error } = useSelector((state) => state.product)
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
+    const { items, status, error } = useSelector((state) => state.product);
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    // Fetch products when the component mounts
-    dispatch(fetchProducts());
-  }, [dispatch]);
-  
-  const handleClick = (id, e) => {
-    e.preventDefault();
-    // Navigate to edit product page or open edit modal
-    navigate(`/owner/editproduct/${id}`);
-  }
+    const [clickProduct, setClickProduct] = useState(null)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        try {
+            dispatch(fetchProducts())
+        } catch (error) {
+            console.error('Failed to fetch products:', error);
+        }
+    }, [dispatch])
+
+    const handleClick = (id, e) => {
+        e.preventDefault();
+        navigate(`/product/${id}`);
+    }
 
 
-  return (
-    <div className='flex flex-wrap rounded-2xl bg-[#eaf1f1] '>
-      {status === 'loading' && <p>Loading products...</p>}
-      {status === 'failed' && <p>Error: {error}</p>}
-      {status === 'succeeded' &&
-        items.map((product) => (
-          <div key={product._id} onClick={(e)=>handleClick(product._id,e)} className='w-[300px] h-[300px] bg-white m-5 p-5 rounded-2xl flex flex-col items-center justify-center gap-3'>
-            <div>
-              <img className='w-[200px] h-[200px] rounded-2xl' src={import.meta.env.VITE_BASE_URL + `/image/${product.productImage}`} alt="" />
-            </div>
-            <div key={product._id} className="">
-              <h3>{product.name}</h3>
-              {/* <p>{product.description}</p> */}
-              <p>Price: ${product.price}</p>
-              {/* Add edit functionality here */}
-            </div>
-          </div>
-        ))
-      }
 
-    </div>
-  )
+    return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 bg-[#eaf1f1] p-4 rounded-2xl md:grid-cols-1 lg:grid-cols-4 gap-4">
+            {items.map((item,index) => (
+                <div
+                    key={item.id || index}
+                    className="rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer"
+                >
+                    <div className="flex items-center justify-center overflow-hidden rounded-xl mb-3 bg-gray-100">
+                        <img src={item.productImage} alt={item.name} className="w-[500px] h-[200px]" />
+                    </div>
+
+
+                    <h2 className="text-xl font-semibold mb-1 truncate">{item.brand}</h2>
+                    <p className="text-sm text-gray-600 line-clamp-2 mb-2">{item.description}</p>
+                    <h2 className="text-lg font-semibold mb-1 truncate">{item.name}</h2>
+
+
+                    <p className="font-bold text-xl mb-3">₹{item.price}</p>
+                    
+
+                    <button className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
+                        View Details
+                    </button>
+                </div>
+            ))}
+        </div>
+    )
 }
 
 export default OEditProduct

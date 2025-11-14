@@ -1,20 +1,42 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Sidebar = () => {
+const Sidebar = ({ setOpenSideBar }) => {
+  const navigate = useNavigate();
+
+  const menuItems = [
+    { key: "addProduct", label: "Add Product" },
+    { key: "editProduct", label: "Edit Product Details" },
+    { key: "orders", label: "Orders" },
+    { key: "payments", label: "Earning & Payments" },
+    { key: "profile", label: "Profile" },
+  ];
+
+  // const handleClick = (key) => {
+  //   localStorage.setItem("activeSection", key);
+  //   setActiveSection(key);
+  //   setOpenSideBar(false); // ✅ Close menu on mobile
+  // };
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("ownertoken");
+  //   navigate("/login");
+  // };
+
   return (
-    <div className='h-auto bg-[#eaf1f1] w-[60%] rounded-3xl p-5 flex  flex-col gap-5'>   
-        <h2 className='text-2xl'>Select Product Type:</h2>
-        <ul className='flex flex-col items-center gap-5 text-xl'>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="All">All</li>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="Electronics">Electronics</li>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="Clothing">Clothing</li>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="Accessories">Accessories</li>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="Home">Home</li>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="Grocery">Grocery</li>
-          <li className='p-2 bg-white w-full rounded-2xl text-center hover:text-blue-500 cursor-pointer' value="Other">Other</li>
-        </ul>
-    </div>
-  )
-}
+    <div className="rounded-2xl bg-[#eaf1f1] p-8 w-64">
+      <ul className="flex flex-col gap-4 font-semibold">
 
-export default Sidebar
+        {menuItems.map((item) => (
+          <li
+            key={item.key}
+            className={`p-2 rounded-xl text-xl text-center cursor-pointer`}>
+            {item.label}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Sidebar;
