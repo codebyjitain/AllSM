@@ -27,6 +27,20 @@ const ownerSchema = new mongoose.Schema({
             }
         }
     ],
+    store_name: {
+        type: String,
+    },
+    store_address: {
+        type: String,
+    },
+    bussiness_category: {
+        type: String,
+    },
+    status: {
+        type: String,
+        enum: ['active', 'inactive', 'suspended'],
+        default: 'active'
+    },
     createdAt: {
         type: Date,
         default: Date.now

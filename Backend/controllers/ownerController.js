@@ -1,5 +1,6 @@
 const Owner = require('../models/owner.models');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('../utils/bcrypt-utils');
 
 const ownerLoginController = async (req, res) => {
     const { email, password } = req.body;
@@ -7,7 +8,12 @@ const ownerLoginController = async (req, res) => {
     try {
         const owner = await Owner.findOne({ email });
 
-        if (!owner || owner.password !== password) {
+        if (!owner) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        const isPasswordValid = await bcrypt.verifyPassword(password, owner.password);
+        if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
@@ -20,7 +26,7 @@ const ownerLoginController = async (req, res) => {
 }
 
 const ownerRegisterController = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password ,store_name , store_address , bussiness_category} = req.body;
 
     try {
         const existingOwner = await Owner.findOne({ email });
@@ -28,19 +34,21 @@ const ownerRegisterController = async (req, res) => {
             return res.status(400).json({ message: 'Owner already exists' });
         }
 
-        const newOwner = new Owner({ name, email, password });
+        
+        const hashPassword = await bcrypt.hashPassword(password);
+
+        const newOwner = new Owner({ name, email, password : hashPassword , store_name , store_address , bussiness_category});
         await newOwner.save();
 
-        const token = jwt.sign({ ownerId: newOwner._id, email: newOwner.email }, process.env.JWT_SECRET);
-
-        res.status(201).json({ message: 'Owner registered successfully', token , owner: newOwner });
+        res.status(201).json({ message: 'Owner registered successfully', owner: newOwner });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
+        console.log(error);
     }
 }
 
 // get Owner By Token
-const getOwnerByToken = async (req, res) => {
+const verifyOwner = async (req, res) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -63,4 +71,4 @@ const getOwnerByToken = async (req, res) => {
     }
 };
 
-module.exports = { ownerLoginController, ownerRegisterController , getOwnerByToken };
+module.exports = { ownerLoginController, ownerRegisterController , verifyOwner};

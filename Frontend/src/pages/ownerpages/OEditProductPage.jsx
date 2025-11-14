@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getProductById, updateProduct } from '../redux/slices/productSlice'
+import { getProductById, updateProduct } from '../../redux/slices/productSlice'
 import { useParams } from 'react-router-dom'
-import ONavbar from '../components/ownercomponents/ONavbar'
+import ONavbar from '../../components/ownercomponents/ONavbar'
 import { toast } from 'react-toastify'
 
 

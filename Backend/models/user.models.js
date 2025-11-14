@@ -14,6 +14,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    gender: {
+        type: String,
+        enum: ['male', 'female'],
+    },
+    address: {
+        type: String,
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
     cart: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',

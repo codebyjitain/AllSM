@@ -8,7 +8,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
 
 export const getProductById = createAsyncThunk('products/getProductById', async (id) => {
     const response = await axios.get(import.meta.env.VITE_BASE_URL + `/products/${id}`);
-    console.log(response.data);
+    
     return response.data;
 });
 

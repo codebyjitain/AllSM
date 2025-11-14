@@ -23,13 +23,39 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    type: {
+    discount_price: {
+        type: Number,
+        default: null
+    },
+    stock: {
+        type: String,
+        required: true,
+        enum: ['in stock', 'out of stock'],
+    },
+    category: {
         type: String,
         required: true
     },
+    // later use this for multiple images
+    // otherImages: {
+    //     type: [String],
+    //     default: []
+    // },
     otherNames: {
         type: [String],
         default: []
+    },
+    brand: {
+        type: String,
+        required: true
+    },
+    isactive: {
+        type: Boolean,
+        default: true
+    },
+    specifications: {
+        type: Object,
+        default: {}
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,

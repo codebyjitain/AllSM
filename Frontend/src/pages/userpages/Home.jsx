@@ -1,10 +1,12 @@
 import React from 'react'
-import Navbar from '../components/Navbar'
-import ProductPreview from '../components/ProductPreview'
-import Sidebar from '../components/Sidebar'
-import Footer from '../components/Footer'
+import Navbar from '../../components/usercomponents/Navbar'
+import ProductPreview from '../../components/usercomponents/ProductPreview'
+import Sidebar from '../../components/usercomponents/Sidebar'
+import Footer from '../../components/usercomponents/Footer'
 
 const Home = () => {
+  
+
   return (
     <div className='max-w-screen flex flex-col items-center min-h-screen '>
 
@@ -15,9 +17,9 @@ const Home = () => {
           <ProductPreview />
         </div>
       </div>
-      <div className='relative mt-10 h-[200px]'>
+      {/* <div className='relative mt-10 h-[200px]'>
         <Footer />
-      </div>
+      </div> */}
     </div>
   )
 }

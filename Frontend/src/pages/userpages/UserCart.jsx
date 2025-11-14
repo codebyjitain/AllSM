@@ -1,29 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../components/Navbar'
+import React, { use, useEffect, useState } from 'react'
+import Navbar from '../../components/usercomponents/Navbar'
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { userCart } from '../../redux/slices/userSlice';
 
 const UserCart = () => {
+    const dispatch = useDispatch();
+    const {cart , status , error} = useSelector((state) => state.user);
     const [products, setProducts] = useState(null)
-    const token = localStorage.getItem('token');
 
     useEffect(() => {
-        const fetchCart = async () => {
-            try {
-                const response = await axios.get('http://localhost:3000/users/cart', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                console.log(response.data.cart);
-                setProducts(response.data.cart);
+        dispatch(userCart())
+    }, [dispatch]);
 
-            } catch (error) {
-                console.error('Error fetching cart data:', error);
-            }
-        };
+    useEffect(() => {
+        setProducts(cart)
+    },[ cart]);
 
-        fetchCart();
-    }, [token]);
 
     if (products === null) {
         return (
@@ -46,7 +40,7 @@ const UserCart = () => {
                 <Navbar />
                 <div className='flex flex-col gap-5'>
                     {products.map((product, index) => (
-                        <div key={product._id || index} className='flex gap-5'>
+                        <div key={ index} className='flex gap-5'>
                             {/* Left Section: Product Info */}
                             <div className='w-2/3  bg-linear-to-r from-[#f5f7f6] to-[#f0f9f6] rounded-2xl flex gap-10 p-5 items-center'>
                                 <div className="w-1/4">

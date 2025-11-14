@@ -4,12 +4,11 @@ const Owner = require('../models/owner.models');
 
 // Create a new product
 const createProduct = async (req, res) => {
-    console.log(req.body)
     try {
-        const { name, description, price, ownertoken , type , quantity , otherNames } = req.body;
+        const { name, description, price, ownertoken , category , quantity , otherNames , stock , brand ,specifications,discounted_price} = req.body;
         const productImage = req.file ? req.file.filename : null;
 
-        if (!name || !description || !price || !productImage || !ownertoken || !type || !quantity) {
+        if (!name || !description || !price || !productImage || !ownertoken || !quantity) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -26,17 +25,21 @@ const createProduct = async (req, res) => {
                 otherNamesArray = otherNames.split(',').map(name => name.trim());
             }
         }
-
+        
         // ✅ Create new product
         const newProduct = new Product({
             name,
             description,
             price,
-            productImage,
+            productImage : process.env.BASE_URL + '/image/' + productImage,
             owner: ownerId,
             quantity: quantity,
-            type: type,
-            otherNames: otherNamesArray
+            otherNames: otherNamesArray,
+            category,
+            brand,
+            specifications,
+            stock,
+            discount_price: discounted_price || null
         });
 
         await newProduct.save();
@@ -93,7 +96,7 @@ const updateProduct = async (req, res) => {
     
     try {
         const { id } = req.params;
-        const { name, description, price , type , otherNames , quantity} = req.body;
+        const { name, description, price, ownertoken , category , quantity , otherNames , brand ,specifications,discounted_price , stock} = req.body;
     
         const productImage = req.file ? req.file.filename : null;
 
@@ -112,8 +115,13 @@ const updateProduct = async (req, res) => {
             description,
             price,
             otherNames: otherNamesArray,
-            type,
-            quantity
+            category,
+            quantity,
+            category,
+            brand,
+            specifications,
+            stock,
+            discount_price: discounted_price || null
         };
 
         if (productImage) {

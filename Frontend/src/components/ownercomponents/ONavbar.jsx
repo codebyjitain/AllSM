@@ -1,40 +1,50 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOwnerByToken } from '../../redux/slices/ownerSlice';
+import { verifyOwner } from '../../redux/slices/ownerSlice';
 
-const ONavbar = () => {
-    const { owner , status, error } = useSelector((state) => state.owner);
-    const dispatch = useDispatch()
-    const [name, setName] = useState('')
+const ONavbar = ({ setOpenSideBar, openSideBar }) => {
+    const { owner } = useSelector((state) => state.owner);
+    const dispatch = useDispatch();
+    const [name, setName] = useState('');
 
     useEffect(() => {
-        dispatch(getOwnerByToken())
+        dispatch(verifyOwner());
     }, []);
 
     useEffect(() => {
-        if (owner && owner.name) {
+        if (owner?.name) {
             setName(owner.name);
         }
     }, [owner]);
-    
+
     return (
-        
-        <div className=' h-16 flex justify-between p-3 bg-[#eaf1f1] rounded-4xl'>
-            
-            <div className='bg-[#e4eaec] flex items-center p-3 rounded-4xl'>
-                Logo
+        <div className="h-16 flex items-center justify-between p-4 bg-[#eaf1f1] rounded-4xl w-full">
+
+            {/* ✅ Left Section (Menu + Logo) */}
+            <div className="flex items-center gap-4">
+                {/* Sidebar Button - Only Mobile */}
+                <button
+                    className="block md:hidden p-2 bg-blue-500 text-white rounded-xl"
+                    onClick={() => setOpenSideBar(!openSideBar)}
+                >
+                    ☰
+                </button>
+
+                {/* Logo */}
+                <h2 className="font-bold text-lg">Logo</h2>
             </div>
 
-            <div className='flex items-center'>
-                 <h2 className='text-xl capitalize'>Hi , {name}</h2>
-            </div>
-            <div className='flex items-center'>
-                <h2 className='text-xl'>Owner DashBoard</h2>
-            </div>
+            {/* ✅ Center (Greeting - visible on all screens) */}
+            <h2 className="text-lg capitalize hidden sm:block">
+                Hi, {name}
+            </h2>
 
-
+            {/* ✅ Right Section (Dashboard title - Desktop only) */}
+            <h2 className="text-lg font-semibold hidden md:block">
+                Owner Dashboard
+            </h2>
         </div>
-    )
+    );
 }
 
-export default ONavbar
+export default ONavbar;

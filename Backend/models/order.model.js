@@ -6,6 +6,11 @@ const orderSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Owner',
+        required: true
+    },
     products: [
         {
             product: {
@@ -25,7 +30,17 @@ const orderSchema = new mongoose.Schema({
         required: true,
         min: 0
     },
-    status: {
+    paymentMethod: {
+        type: String,
+        enum: ['Credit Card', 'Debit Card', 'PayPal', 'Cash on Delivery'],
+        required: true
+    },
+    paymentStatus: {
+        type: String,
+        enum: ['Pending', 'Completed', 'Failed'],
+        default: 'Pending'
+    },
+    delivery_status: {
         type: String,
         enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
         default: 'Pending'
@@ -33,13 +48,6 @@ const orderSchema = new mongoose.Schema({
     orderDate: {
         type: Date,
         default: Date.now
-    },
-    shippingAddress: {
-        street: String,
-        city: String,
-        state: String,
-        postalCode: String,
-        country: String
     }
 }, {
     timestamps: true

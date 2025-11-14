@@ -10,13 +10,12 @@ const userLoginController = async (req, res) => {
     try {
         const user = await User.findOne({ email });
 
-        
-
         if (!user) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
         const isPasswordValid = await verifyPassword(password, user.password);
+        
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
@@ -30,7 +29,7 @@ const userLoginController = async (req, res) => {
 }
 
 const userRegisterController = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password , gender , address} = req.body;
 
     try {
         const existingUser = await User.findOne({ email });
@@ -40,13 +39,14 @@ const userRegisterController = async (req, res) => {
 
         const hashedPassword = await hashPassword(password);
 
-        const newUser = new User({ name, email, password : hashedPassword });
+        const newUser = new User({ name, email, password : hashedPassword ,gender , address });
         await newUser.save();
 
         
         res.status(201).json({ message: 'User registered successfully', user: newUser });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
+        console.error(error);
         
     }
 }
@@ -91,7 +91,7 @@ const verifyUserController = async (req, res) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.userId)-password;
+        const user = await User.findById(decoded.userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

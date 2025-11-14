@@ -1,66 +1,55 @@
-import React from 'react'
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const OwnerSidebar = ({setActiveSection}) => {
-    
+const OwnerSidebar = ({ activeSection, setActiveSection, setOpenSideBar }) => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-    const handleAddProduct = (e) => {
-        e.preventDefault();
-        localStorage.setItem('activeSection', 'addProduct');
-        setActiveSection('addProduct');
-    }
+  const menuItems = [
+    { key: "addProduct", label: "Add Product" },
+    { key: "editProduct", label: "Edit Product Details" },
+    { key: "orders", label: "Orders" },
+    { key: "payments", label: "Earning & Payments" },
+    { key: "profile", label: "Profile" },
+  ];
 
-    const handleEditProduct = (e) => {
-        e.preventDefault();
-        localStorage.setItem('activeSection', 'editProduct');
-        setActiveSection('editProduct');
-    }
+  const handleClick = (key) => {
+    localStorage.setItem("activeSection", key);
+    setActiveSection(key);
+    setOpenSideBar(false); // ✅ Close menu on mobile
+  };
 
-    const handleSetStock = (e) => {
-        e.preventDefault();
-        localStorage.setItem('activeSection', 'setStock');
-        setActiveSection('setStock');
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("ownertoken");
+    navigate("/login");
+  };
 
-    const handleOrders = (e) => {
-        e.preventDefault();
-        localStorage.setItem('activeSection', 'orders');
-        setActiveSection('orders');
-    }
+  return (
+    <div className="rounded-2xl bg-[#eaf1f1] p-8 w-64">
+      <ul className="flex flex-col gap-4 font-semibold">
 
-    const handlePayments = (e) => {
-        e.preventDefault();
-        localStorage.setItem('activeSection', 'payments');
-        setActiveSection('payments');
-    }
+        {menuItems.map((item) => (
+          <li
+            key={item.key}
+            className={`p-2 rounded-xl text-xl text-center cursor-pointer 
+              ${activeSection === item.key
+                ? "bg-blue-500 text-white"
+                : "bg-white text-black hover:text-blue-500"
+              }`}
+            onClick={() => handleClick(item.key)}
+          >
+            {item.label}
+          </li>
+        ))}
 
-    const handleProfile = (e) => {
-        e.preventDefault();
-        localStorage.setItem('activeSection', 'profile');
-        setActiveSection('profile');
-    }
+        <li
+          className="p-2 bg-white rounded-xl text-xl text-center cursor-pointer text-red-500 hover:text-blue-500"
+          onClick={handleLogout}
+        >
+          Logout
+        </li>
+      </ul>
+    </div>
+  );
+};
 
-    const handleLogout = (e) => {
-        e.preventDefault();
-        localStorage.removeItem('ownertoken');
-        navigate('/ownerlogin');
-    }   
-
-    return (
-        <div className='max-h-screen bg-linear-to-r from-[#e1ebed] to-[#fefeff] rounded-2xl'>
-            <ul className='flex flex-col gap-4 p-10 text-2xl font-semibold'>
-                <li onClick={(e) => handleAddProduct(e)}>Add Product</li>
-                <li onClick={(e) => handleEditProduct(e)}>Edit Product Details</li>
-                <li onClick={(e) => handleSetStock(e)}>Set Stock Quantity</li>
-                <li onClick={(e) => handleOrders(e)}>Orders</li>
-                <li onClick={(e) => handlePayments(e)}>Earning & Payments</li>
-                <li onClick={(e) => handleProfile(e)}>Profile</li>
-                <li onClick={(e) => handleLogout(e)}>Logout</li>
-            </ul>
-
-        </div>
-    )
-}
-
-export default OwnerSidebar
+export default OwnerSidebar;

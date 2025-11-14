@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/usercomponents/Navbar'
 
 const ProductPage = () => {
     const { id } = useParams()

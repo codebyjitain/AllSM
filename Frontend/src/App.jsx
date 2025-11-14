@@ -1,17 +1,16 @@
 import React from 'react'
 import './App.css'
 import { Route, Routes } from 'react-router-dom'
-import UserLoginRegister from './pages/UserLoginRegister'
-import Home from './pages/Home'
+import Home from './pages/userpages/Home'
 import UserMiddleware from './middleware/UserMiddleware'
-import OwnerLoginRegister from './pages/OwnerLoginRegister'
 import OwnerMiddleware from './middleware/OwnerMiddleware'
-import ProductPage from './pages/ProductPage'
-import UserCart from './pages/UserCart'
-import Owner from './pages/Owner'
-import OEditProductPage from './pages/OEditProductPage'
+import ProductPage from './pages/userpages/ProductPage'
+import UserCart from './pages/userpages/UserCart'
+import Owner from './pages/ownerpages/Owner'
+import OEditProductPage from './pages/ownerpages/OEditProductPage'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Login from './pages/Login'
 
 const App = () => {
   return (
@@ -24,16 +23,14 @@ const App = () => {
           </UserMiddleware>
         } />
         <Route path='/login' element={
-          <UserMiddleware>
-            <UserLoginRegister />
-          </UserMiddleware>
+          <Login />
         } />
         <Route path='/owner' element={
           <OwnerMiddleware>
             <Owner />
           </OwnerMiddleware>
         } />
-        <Route path='/ownerlogin' element={<OwnerLoginRegister />} />
+        
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/cart' element={
           <UserMiddleware>
