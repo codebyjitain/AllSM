@@ -38,8 +38,8 @@ const Owner = () => {
           {/* ✅ Sidebar - Always visible on desktop, toggled on mobile */}
           <div
             className={`
-              fixed left-0 h-auto z-50 bg-[#eaf1f1] shadow-xl transform transition-transform duration-300
-              ${openSideBar ? "translate-x-0" : "-translate-x-full"}
+              fixed left-0 h-auto z-50 bg-[#eaf1f1] shadow-xl rounded-2xl transform transition-transform duration-300
+              ${openSideBar ? "translate-x-10" : "-translate-x-[500px]"}
               md:relative md:translate-x-0 md:block md:h-auto md:shadow-none md:bg-transparent
             `}
           >

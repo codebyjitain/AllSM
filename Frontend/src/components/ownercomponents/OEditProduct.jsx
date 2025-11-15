@@ -20,16 +20,21 @@ const OEditProduct = () => {
         }
     }, [dispatch])
 
-    const handleClick = (id, e) => {
+    const handleEdit = (id, e) => {
         e.preventDefault();
-        navigate(`/product/${id}`);
+        navigate(`/owner/editproduct/${id}`)
+    }
+
+    const handleDelete = (id , e)=>{
+        e.preventDefault()
+        
     }
 
 
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 bg-[#eaf1f1] p-4 rounded-2xl md:grid-cols-1 lg:grid-cols-4 gap-4">
-            {items.map((item,index) => (
+            {items.map((item, index) => (
                 <div
                     key={item.id || index}
                     className="rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer"
@@ -45,11 +50,16 @@ const OEditProduct = () => {
 
 
                     <p className="font-bold text-xl mb-3">₹{item.price}</p>
-                    
 
-                    <button className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700">
-                        View Details
-                    </button>
+                    <div className='flex gap-2 '>
+
+                        <button className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700" onClick={(e)=> handleEdit( item._id, e)}>
+                            Edit
+                        </button>
+                        <button className="w-full bg-red-600 text-white py-2 rounded-xl hover:bg-blue-700" onClick={(e)=>handleDelete(item._id , e)}>
+                            Delete
+                        </button>
+                    </div>
                 </div>
             ))}
         </div>

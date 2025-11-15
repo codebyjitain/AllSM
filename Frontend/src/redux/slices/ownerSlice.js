@@ -8,6 +8,7 @@ export const verifyOwner = createAsyncThunk('owners/fetchOwners', async () => {
             'Authorization': `Bearer ${localStorage.getItem('ownertoken')}`
         }
     });
+    console.log(response.data)
     return response.data;
 });
 

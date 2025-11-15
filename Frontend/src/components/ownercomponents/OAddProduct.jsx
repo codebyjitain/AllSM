@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 
 const AddProduct = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -70,7 +69,7 @@ const AddProduct = () => {
 
 
           {/* Product Name */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Product Name*</label>
             <input
               type="text"
@@ -82,7 +81,7 @@ const AddProduct = () => {
           </div>
 
           {/* Brand */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Brand*</label>
             <input
               type="text"
@@ -95,7 +94,7 @@ const AddProduct = () => {
           </div>
 
           {/* Price */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Price (₹)*</label>
             <input
               type="number"
@@ -107,7 +106,7 @@ const AddProduct = () => {
           </div>
 
           {/* Stock */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Stock*</label>
             <select
               value={stock}
@@ -121,7 +120,7 @@ const AddProduct = () => {
           </div>
 
           {/* Discounted Price */}
-          <div>
+          <div className="bg-white p-2 rounded-xl"> 
             <label className="block mb-1 font-semibold">Discount Price (₹)</label>
             <input
               type="number"
@@ -133,7 +132,7 @@ const AddProduct = () => {
           </div>
 
           {/* Quantity */}
-          <div>
+          <div className="bg-white p-2 rounded-xl"> 
             <label className="block mb-1 font-semibold">Quantity Available*</label>
             <input
               type="number"
@@ -147,7 +146,7 @@ const AddProduct = () => {
           
 
           {/* Product Category */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Category*</label>
             <select
               value={category}
@@ -166,12 +165,12 @@ const AddProduct = () => {
           </div>
 
 
-        </div>
+        </div >
 
 
         <div className="flex flex-col md:w-2/5 md:mt-0 mt-5 w-full gap-5">
           {/* Other Names */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">
               Other Names (comma separated)
             </label>
@@ -185,7 +184,7 @@ const AddProduct = () => {
           </div>
 
           {/* Specifications */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Specifications*</label>
             <textarea
               value={specifications}
@@ -197,7 +196,7 @@ const AddProduct = () => {
           </div>
 
           {/* Description */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Description*</label>
             <textarea
               value={description}
@@ -210,7 +209,7 @@ const AddProduct = () => {
 
 
           {/* Product Image */}
-          <div>
+          <div className="bg-white p-2 rounded-xl">
             <label className="block mb-1 font-semibold">Product Image*</label>
             <input
               type="file"
