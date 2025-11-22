@@ -12,10 +12,12 @@ const OEditProductPage = () => {
     const [name, setName] = useState('')
     const [price, setPrice] = useState(0)
     const [description, setDescription] = useState('')
-    const [type, setType] = useState('');
+    const [category, setCategory] = useState('')
+    const [discount_price, setDiscount_price] = useState('')
     const [otherNames, setOtherNames] = useState('');
     const [quantity, setQuantity] = useState(1);
-
+    const [brandName, setBrandName] = useState('')
+    const [specifications, setSpecifications] = useState('')
 
     const { product, status, error } = useSelector((state) => state.product)
     const dispatch = useDispatch()
@@ -29,12 +31,16 @@ const OEditProductPage = () => {
 
     useEffect(() => {
         if (product) {
+          console.log(product)
             setName(product.name || "");
             setDescription(product.description || "");
             setPrice(product.price || 0);
-            setType(product.type || "");
+            setCategory(product.category || "")
             setOtherNames(product.otherNames || "");
             setQuantity(product.quantity || 1);
+            setBrandName(product.brand || "")
+            setDiscount_price(product.discount_price || "")
+            setSpecifications(product.specifications || "")
         }
     }, [product]);
 
@@ -46,9 +52,13 @@ const OEditProductPage = () => {
         formData.append("name", name);
         formData.append("price", price);
         formData.append("description", description);
-        formData.append("type", type);
+        formData.append("category" , category);
         formData.append("otherNames", otherNames);
         formData.append("quantity", quantity);
+        formData.append("brand" ,  brandName);
+        formData.append("discounted_price" , discount_price);
+        formData.append("specifications" , specifications)
+
         if (image) {
             formData.append('productImage', image);
         }
@@ -118,6 +128,18 @@ const OEditProductPage = () => {
           {/* Left Side */}
           <div className='w-full md:w-[45%] flex flex-col gap-4'>
 
+            {/* Brand Name */}
+            <div>
+              <label className='block mb-2 font-semibold'> Brand Name</label>
+              <input
+                type="text"
+                value={brandName}
+                onChange={(e) => setBrandName(e.target.value)}
+                className='border p-2 rounded w-full'
+              />
+            </div>
+
+
             {/* Name */}
             <div>
               <label className='block mb-2 font-semibold'>Name</label>
@@ -151,6 +173,17 @@ const OEditProductPage = () => {
               />
             </div>
 
+            {/* Discount Price */}
+            <div>
+              <label className='block mb-2 font-semibold'>Discount Price</label>
+              <input
+                type="number"
+                value={discount_price}
+                onChange={(e) => setDiscount_price(e.target.value)}
+                className='border p-2 rounded w-full'
+              />
+            </div>
+
           </div>
 
           {/* Right Side */}
@@ -179,12 +212,25 @@ const OEditProductPage = () => {
               />
             </div>
 
+            {/* Specifications */}
+            <div>
+              <label className='block mb-2 font-semibold'>Specifications</label>
+              <textarea
+                type="text"
+                value={specifications}
+                onChange={(e) => setSpecifications(e.target.value)}
+                className='border p-2 rounded w-full'
+                rows={7}
+                placeholder="Enter other names (comma separated)"
+              ></textarea>
+            </div>
+
             {/* Product Type */}
             <div>
-              <label className='block mb-2 font-semibold'>Type of Product*</label>
+              <label className='block mb-2 font-semibold'>Category*</label>
               <select
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 className='border p-2 rounded w-full'
               >
                 <option value="">Select Type</option>

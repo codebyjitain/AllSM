@@ -12,4 +12,10 @@ router.post('/register', ownerController.ownerRegisterController);
 // verify Owner route
 router.get('/verifyOwner', ownerController.verifyOwner);
 
+// change Password
+router.put('/changePassword' , ownerController.changePassword)
+
+// Update Owner Data
+router.put('/updateOwner' , ownerController.updateOwner)
+
 module.exports = router;

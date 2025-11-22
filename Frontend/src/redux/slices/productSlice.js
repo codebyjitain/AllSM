@@ -6,10 +6,21 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async ()
     return response.data;
 });
 
-export const getProductById = createAsyncThunk('products/getProductById', async (id) => {
-    const response = await axios.get(import.meta.env.VITE_BASE_URL + `/products/${id}`);
+export const getProductById = createAsyncThunk('products/getProductById', async (id , {rejectWithValue}) => {
+    try {
+        const response = await axios.get(import.meta.env.VITE_BASE_URL + `/products/${id}`);
+        return {
+            status: response.status,
+            data: response.data,
+            
+        }
+    } catch (error) {
+         return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
     
-    return response.data;
 });
 
 export const updateProduct = createAsyncThunk('products/updateProduct', async ({ id, formData }) => {
@@ -29,6 +40,27 @@ export const addProduct = createAsyncThunk('products/addProduct', async (formDat
     });
     return response.data;
 });
+
+
+export const deleteProduct = createAsyncThunk('products/deleteProduct', async (id, { rejectWithValue }) => {
+    try {
+        const response = await axios.delete(import.meta.env.VITE_BASE_URL + '/products/delete' + id, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ownertoken')}`
+            }
+        })
+        return {
+            status: response.status,
+            data: response.data
+        }
+
+    } catch (error) {
+        return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
+})
 
 const productSlice = createSlice({
     name: 'products',
@@ -57,31 +89,18 @@ const productSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
             })
-            .addCase(getProductById.pending, (state) => {
-                state.status = 'loading';
-                state.error = null;
-            })
-            .addCase(getProductById.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                // Optionally handle the fetched product by ID
-                state.product = action.payload // Example: replace items with the fetched product
-            })
-            .addCase(getProductById.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.error.message;
-            })
             .addCase(updateProduct.pending, (state) => {
                 state.status = 'loading';
                 state.error = null;
             })
             .addCase(updateProduct.fulfilled, (state, action) => {
-                    state.status = 'succeeded';
-                    const updatedProduct = action.payload.product; // extract actual product
-                    const index = state.items.findIndex(p => p._id === updatedProduct._id);
-                    if (index !== -1) {
-                        state.items[index] = updatedProduct;
-                    }
-                })
+                state.status = 'succeeded';
+                const updatedProduct = action.payload.product; // extract actual product
+                const index = state.items.findIndex(p => p._id === updatedProduct._id);
+                if (index !== -1) {
+                    state.items[index] = updatedProduct;
+                }
+            })
             .addCase(updateProduct.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;

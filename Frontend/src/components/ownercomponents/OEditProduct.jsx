@@ -37,7 +37,7 @@ const OEditProduct = () => {
             {items.map((item, index) => (
                 <div
                     key={item.id || index}
-                    className="rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer"
+                    className="rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition "
                 >
                     <div className="flex items-center justify-center overflow-hidden rounded-xl mb-3 bg-gray-100">
                         <img src={item.productImage} alt={item.name} className="w-[500px] h-[200px]" />
@@ -53,10 +53,10 @@ const OEditProduct = () => {
 
                     <div className='flex gap-2 '>
 
-                        <button className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700" onClick={(e)=> handleEdit( item._id, e)}>
+                        <button className="w-full bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 cursor-pointer" onClick={(e)=> handleEdit( item._id, e)}>
                             Edit
                         </button>
-                        <button className="w-full bg-red-600 text-white py-2 rounded-xl hover:bg-blue-700" onClick={(e)=>handleDelete(item._id , e)}>
+                        <button className="w-full bg-red-600 text-white py-2 rounded-xl hover:bg-blue-700 cursor-pointer" onClick={(e)=>handleDelete(item._id , e)}>
                             Delete
                         </button>
                     </div>

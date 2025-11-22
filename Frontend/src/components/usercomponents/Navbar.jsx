@@ -24,9 +24,9 @@ const Navbar = ({ setOpenSideBar, openSideBar }) => {
                 <h2 className="font-bold text-lg">Logo</h2>
             </div>
 
-            {/* ✅ Center (Greeting - visible on all screens) */}
+            {/* ✅ Center */}
             <h2 className="text-lg capitalize flex items-center gap-1">
-                <input type="search" className='p-2 bg-white rounded-xl' placeholder='Search Here..' />
+                <input type="search" className='p-2 bg-white w-5/6 rounded-xl' placeholder='Search Here..' />
                 <h2 className='p-2 bg-white rounded-xl'>0</h2>
             </h2>
 

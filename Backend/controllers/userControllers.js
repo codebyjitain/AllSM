@@ -52,7 +52,8 @@ const userRegisterController = async (req, res) => {
 }
 
 const addToCartController = async (req, res) => {
-    const { productId, token} = req.body;
+    const { productId } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
     
     try {
 

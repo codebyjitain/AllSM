@@ -30,6 +30,26 @@ export const userCart = createAsyncThunk("user/userCart", async () => {
     return response.data.cart;
 });
 
+export const addToCart = createAsyncThunk("user/addToCart", async (productId , {rejectWithValue}) => {
+    try {
+        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/addToCart", {productId}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+
+        return {
+            status: response.status,
+            data: response.data
+        }
+    } catch (error) {
+        return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
+})
+
 const userSlice = createSlice({
     name: "user",
     initialState: {

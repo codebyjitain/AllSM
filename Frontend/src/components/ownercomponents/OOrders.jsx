@@ -2,7 +2,9 @@ import React from 'react'
 
 const OOrders = () => {
   return (
-    <div>OOrders</div>
+    <div className='bg-[#eaf1f1] w-full h-screen rounded-2xl'>
+        
+    </div>
   )
 }
 
