@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getProductById } from '../../redux/slices/productSlice'
 
-const ProductPriceCalculation = ({ id }) => {
+const ProductPriceCalculation = ({ id ,setTotalAmount}) => {
 
     const dispatch = useDispatch()
 
@@ -15,6 +15,7 @@ const ProductPriceCalculation = ({ id }) => {
             console.log(checkProduct)
             setPrice(checkProduct.payload.data.price)
             setDiscountedPrice(checkProduct.payload.data.discount_price)
+            setTotalAmount(discounted_price + (discounted_price * 0.18))
         }
         ok()
     }, [dispatch])

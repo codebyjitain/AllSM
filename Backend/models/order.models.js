@@ -21,7 +21,8 @@ const orderSchema = new mongoose.Schema({
             quantity: {
                 type: Number,
                 required: true,
-                min: 1
+                min: 1,
+                default: 1
             }
         }
     ],
@@ -44,6 +45,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
         default: 'Pending'
+    },
+    order_address:{
+        type: String,
+        required: true
     },
     orderDate: {
         type: Date,

@@ -4,6 +4,7 @@ const connectDB = require('./config/db-config');
 const userRoutes = require('./routes/user.routes');
 const ownerRoutes = require('./routes/owner.routes');
 const productRoutes = require('./routes/product.routes');
+const orderRoutes = require('./routes/order.routes');
 const cors = require('cors');
 const path = require('path');
 
@@ -34,6 +35,8 @@ app.use('/owners', ownerRoutes);
 
 // Product routes
 app.use('/products', productRoutes);
+
+app.use('/orders', orderRoutes)
 
 // Start the server
 const PORT = process.env.PORT || 3000;
