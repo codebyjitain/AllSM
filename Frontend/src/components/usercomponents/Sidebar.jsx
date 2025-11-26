@@ -5,11 +5,11 @@ const Sidebar = ({ setOpenSideBar }) => {
   const navigate = useNavigate();
 
   const menuItems = [
-    { key: "addProduct", label: "Add Product" },
-    { key: "editProduct", label: "Edit Product Details" },
-    { key: "orders", label: "Orders" },
-    { key: "payments", label: "Earning & Payments" },
-    { key: "profile", label: "Profile" },
+    { key: "all", label: "All" },
+    { key: "electronics", label: "Electronics" },
+    { key: "clothing", label: "Clothing" },
+    { key: "grocery", label: "Grocery" },
+    { key: "necessary", label: "Necessary" },
   ];
 
   // const handleClick = (key) => {

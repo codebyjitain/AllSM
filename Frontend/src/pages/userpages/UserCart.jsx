@@ -45,7 +45,7 @@ const UserCart = () => {
                             <div className='w-2/3  bg-linear-to-r from-[#f5f7f6] to-[#f0f9f6] rounded-2xl flex gap-10 p-5 items-center'>
                                 <div className="w-1/4">
                                     <img
-                                        src={`http://localhost:3000/image/${product.productImage}`}
+                                        src={product.productImage}
                                         alt={product.name}
                                         className="rounded-3xl w-full"
                                     />

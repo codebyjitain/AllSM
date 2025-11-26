@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const createOrder = createAsyncThunk("order/createOrder", async (orderData , {rejectWithValue}) => {
+export const createOrder = createAsyncThunk("order/createOrder", async (orderData, { rejectWithValue }) => {
     try {
-        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/orders/create", orderData ,{
+        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/orders/create", orderData, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -13,7 +13,46 @@ export const createOrder = createAsyncThunk("order/createOrder", async (orderDat
             status: response.status,
             data: response.data
         }
-        
+
+
+    } catch (error) {
+        return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
+})
+
+export const getOrdersATO = createAsyncThunk("order/getOrders", async (_ , {rejectWithValue}) => {
+    try {
+        const response = await axios.get(import.meta.env.VITE_BASE_URL + "/orders/getOrdersATO", {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ownertoken')}`
+            }
+        })
+        return {
+            status: response.status,
+            data: response.data
+        }
+    } catch (error) {
+        return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
+})
+
+export const updateOrder = createAsyncThunk("order/updateOrder", async (orderData , {rejectWithValue}) => {
+    try {
+        const response = await axios.put(import.meta.env.VITE_BASE_URL + "/orders/updateOrder", orderData, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('ownertoken')}`
+            }
+        })
+        return {
+            status: response.status,
+            data: response.data
+        }
     } catch (error) {
         return rejectWithValue({
             status: error.response.status,
