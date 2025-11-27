@@ -12,6 +12,9 @@ router.post('/register', userController.userRegisterController );
 // Add to cart route
 router.post('/addtocart', userController.addToCartController );
 
+// Remove from cart route
+router.post('/removefromcart', userController.removeFromCartController );
+
 // Get cart items route
 router.get('/cart', userController.getCartItemsController );
 

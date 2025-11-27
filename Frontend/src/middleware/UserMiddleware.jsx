@@ -20,7 +20,7 @@ const UserMiddleware = ({children}) => {
             try {
                 const resultAction = await dispatch(verifyUser(token));
                 if (verifyUser.fulfilled.match(resultAction)) {
-                    navigate('/');
+                    return children
                 } else {
                     // token invalid
                     localStorage.removeItem('token');

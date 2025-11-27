@@ -102,4 +102,27 @@ const verifyUserController = async (req, res) => {
     }
 }
 
+// remove product from usercart
+const removeFromCartController = async (req, res) => {
+    const { productId } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+
+    try {
+        const userId = jwt.verify(token, process.env.JWT_SECRET).userId;
+        if (!userId) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        const user = await User.findById(userId);
+        const productIndex = user.cart.indexOf(productId);
+        if (productIndex === -1) {
+            return res.status(404).json({ message: 'Product not found in cart' });
+        }
+        user.cart.splice(productIndex, 1);
+        await user.save();
+        res.status(200).json({ message: 'Product removed from cart', cart: user.cart });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
+
 module.exports = { userLoginController, userRegisterController, addToCartController , getCartItemsController , verifyUserController};

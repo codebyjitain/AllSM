@@ -21,18 +21,49 @@ export const verifyUser = createAsyncThunk("user/verifyUser", async (token) => {
     return response.data;
 });
 
-export const userCart = createAsyncThunk("user/userCart", async () => {
-    const response = await axios.get(import.meta.env.VITE_BASE_URL + "/users/cart", {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+export const userCart = createAsyncThunk("user/userCart", async (_, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(import.meta.env.VITE_BASE_URL + "/users/cart", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        return {
+            status: response.status,
+            data: response.data
         }
-    });
-    return response.data.cart;
+    } catch (error) {
+        return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
 });
 
-export const addToCart = createAsyncThunk("user/addToCart", async (productId , {rejectWithValue}) => {
+export const addToCart = createAsyncThunk("user/addToCart", async (productId, { rejectWithValue }) => {
     try {
-        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/addToCart", {productId}, {
+        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/addToCart", { productId }, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+
+        return {
+            status: response.status,
+            data: response.data
+        }
+    } catch (error) {
+        return rejectWithValue({
+            status: error.response.status,
+            message: error.response.data.message
+        })
+    }
+})
+
+
+export const removeFromCart = createAsyncThunk("user/removeFromCart", async (productId, { rejectWithValue }) => {
+    try {
+        const response = await axios.post(import.meta.env.VITE_BASE_URL + "/users/removeFromCart", { productId }, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -101,16 +132,6 @@ const userSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
             })
-            .addCase(userCart.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(userCart.fulfilled, (state, action) => {
-                state.cart = action.payload;
-            })
-            .addCase(userCart.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.error.message;
-            });
     },
 });
 
