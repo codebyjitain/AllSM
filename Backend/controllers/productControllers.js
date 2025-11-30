@@ -1,6 +1,9 @@
 const Product = require('../models/product.models');
 const jwt = require('jsonwebtoken');
 const Owner = require('../models/owner.models');
+const fs = require('fs');
+const path = require('path');
+
 
 // Create a new product
 const createProduct = async (req, res) => {
@@ -166,61 +169,49 @@ const updateProduct = async (req, res) => {
 }
 
 // delete Product
-// const deleteProduct = async (req, res) => {
-    
-//     try {
-//         const { id } = req.params;
-    
-//         const productImage = req.file ? req.file.filename : null;
+const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-//         // Simplify OtherNames
-//         let otherNamesArray = [];
-//         if (otherNames) {
-//             if (Array.isArray(otherNames)) {
-//                 otherNamesArray = otherNames;
-//             } else if (typeof otherNames === 'string') {
-//                 otherNamesArray = otherNames.split(',').map(name => name.trim());
-//             }
-//         }
+        const imageName = await Product.findById(id).select('productImage');
 
-//         const updatedData = {
-//             name,
-//             description,
-//             price,
-//             otherNames: otherNamesArray,
-//             category,
-//             quantity,
-//             category,
-//             brand,
-//             specifications,
-//             stock,
-//             discount_price: discounted_price || null
-//         };
+        const owner = await Product.findById(id).select('owner');
 
-//         if (productImage) {
-//             updatedData.productImage = productImage;
-//         }
+        // ✅ Find and update owner safely
+        const ownerToUpdate = await Owner.findByIdAndUpdate(owner , { $pull: { products: { product: id } } }, { new: true });
+        
 
-//         const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, { new: true });
+        const imagePath = path.join(__dirname , '..' , 'uploads' , imageName.productImage.split('/').pop());
 
-//         if (!updatedProduct) {
-//             return res.status(404).json({ message: 'Product not found' });
-//         }
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error('Error deleting image:', err);
+            }
+            console.log("File Deleted Successfully")
+        })
 
-//         res.status(200).json({
-//             message: 'Product updated successfully',
-//             product: updatedProduct
-//         });
-//     } catch (error) {
-//         console.error('Error updating product:', error);
-//         res.status(500).json({ message: 'Server error', error: error.message });
-//     }
-// }
+        const deletedProduct = await Product.findByIdAndDelete(id);
+        
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json({
+            message: 'Product deleted successfully',
+            product: deletedProduct
+        });
+
+    } catch (error) {
+        console.error('Error Deleting product:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+}
 
 
 module.exports = {
     createProduct,
     getAllProducts,
     getProductById,
-    updateProduct
+    updateProduct,
+    deleteProduct
 };

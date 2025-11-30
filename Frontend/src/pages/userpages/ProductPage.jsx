@@ -30,20 +30,11 @@ const ProductPage = () => {
     const handleCart = async (e) => {
         e.preventDefault()
         const check = await dispatch(addToCart(id))
-        if (check.payload?.status === 200) {
-            toast.success(check.payload.data.message)
+        if (check.payload?.status !== 200) {
+            toast.error(check.payload.message)
         }
         else {
-            if (check.payload?.status === 401) {
-                toast.error(check.payload.message)
-            }
-            else if (check.payload?.status === 400) {
-                toast.error(check.payload.message)
-
-            }
-            else {
-                toast.error(check.payload.message)
-            }
+            toast.success("Product added to cart")
         }
     }
 
@@ -65,7 +56,7 @@ const ProductPage = () => {
                 <div>
                     <img className='rounded-2xl md:w-[500px] md:h-[400px] w-[350px] h-[250px]' src={product.productImage} alt="" />
                 </div>
-                <div className='bg-white p-4 flex flex-col gap-4 rounded-xl'>
+                <div className='bg-white p-4 md:w-2/3 w-full flex flex-col gap-4 rounded-xl'>
                     <h2 className='text-2xl font-bold'>{product.brand}</h2>
                     <h2 className='text-xl'>{product.name}</h2>
                     <h2 className='text-xl italic'>{product.discount_price}</h2>

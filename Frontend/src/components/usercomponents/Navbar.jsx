@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {ListOrdered, Search, ShoppingCart, User } from 'lucide-react'
+import { useSelector } from 'react-redux'
 
 const Navbar = ({ setOpenSideBar, openSideBar }) => {
     const navigate = useNavigate()
+    const {userInfo} = useSelector(state=>state.user)
 
     // only for mobile
     const [openMenu, setOpenMenu] = useState(false)
@@ -13,6 +15,7 @@ const Navbar = ({ setOpenSideBar, openSideBar }) => {
         navigate('/cart')
     }
 
+    
 
     return (
         <div className="h-16 flex items-center justify-between p-4 bg-[#eaf1f1] rounded-4xl w-full">
@@ -53,7 +56,7 @@ const Navbar = ({ setOpenSideBar, openSideBar }) => {
 
                         {/* Profile */}
                         <div className="flex items-center gap-2 bg-white rounded-3xl px-3 py-2 cursor-pointer">
-                            <h2 className="capitalize">{}</h2>
+                            <h2 className="capitalize">{userInfo?.user.name}</h2>
                             <div className="border rounded-full px-2 py-1">
                                 <User />
                             </div>

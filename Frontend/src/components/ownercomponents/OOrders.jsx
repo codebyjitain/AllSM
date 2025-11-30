@@ -74,10 +74,10 @@ const OOrders = () => {
                   order.products.map((product) => (
                     <div key={product._id} className='flex flex-col bg-[#eaf1f1] p-4 rounded-xl md:flex-row md:justify-between items-center gap-2'>
                       <div>
-                        <img className='rounded-xl' src={product.product.productImage} alt="" />
+                        <img className='rounded-xl w-[300px] h-[300px]' src={product.product.productImage} alt="" />
                       </div>
-                      <div>
-
+                      <div className='flex flex-col bg-white p-4 rounded-xl'>
+                        <h2 className='text-lg font-bold'>Product Id: {product.product._id}</h2>
                         <h2 className='text-lg font-bold'>Product Brand: {product.product.brand}</h2>
                         <h2 className='capitalize text-lg font-bold'>Product Name: {product.product.name}</h2>
                         <h2 className='text-lg font-bold'>Product Price: {product.product.price}</h2>

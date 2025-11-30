@@ -2,7 +2,8 @@ import React, { use, useEffect } from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProducts } from '../../redux/slices/productSlice'
+import { deleteProduct, fetchProducts } from '../../redux/slices/productSlice'
+import  { toast } from 'react-toastify'
 
 
 const OEditProduct = () => {
@@ -41,9 +42,20 @@ const OEditProduct = () => {
         navigate(`/owner/editproduct/${id}`)
     }
 
-    const handleDelete = (id, e) => {
+    const handleDelete = async (id, e) => {
         e.preventDefault()
-
+        try {
+            
+            const check = await dispatch(deleteProduct(id))
+            if(check.payload?.status !== 200){
+                toast.error(check.payload.message)
+            }else{
+                toast.success("Product Deleted")
+                window.location.reload()
+            }
+        } catch (error) {
+            toast.error("Something Went Wrong")
+        }
     }
 
 

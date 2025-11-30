@@ -62,7 +62,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (formDat
 
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (id, { rejectWithValue }) => {
     try {
-        const response = await axios.delete(import.meta.env.VITE_BASE_URL + '/products/delete' + id, {
+        const response = await axios.delete(import.meta.env.VITE_BASE_URL + '/products/delete/' + id, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('ownertoken')}`
             }

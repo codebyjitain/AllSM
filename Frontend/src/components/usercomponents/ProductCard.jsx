@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getProductById } from '../../redux/slices/productSlice'
 
-const ProductCard = ({id}) => {
+const ProductCard = ({ id }) => {
     const [product, setProduct] = useState(null)
     const dispatch = useDispatch()
 

@@ -28,20 +28,19 @@ const OwnerLoginRegister = () => {
         e.preventDefault();
         try {
             const ownerData = { name, email, password, gender, store_name, store_address, bussiness_category };
-            await dispatch(registerOwner(ownerData));
-
-            setName("");
-            setEmail("");
-            setPassword("");
-            setGender("");
-            setStore_name("");
-            setStore_address("");
-            setBussiness_category("");
-            localStorage.setItem("ownerFormState", "login");
-            toast.success("Owner Registered");
+            const check = await dispatch(registerOwner(ownerData));
+            if(check.payload?.status !== 201){
+                toast.error(check.payload.message)
+            }
+            else{
+                localStorage.setItem("ownerFormState", "login");
+                setFormState("login");
+                window.location.reload();
+                toast.success("Owner Registered");
+            }
+            
         } catch (err) {
             toast.error("Registration Failed");
-            console.log(err);
         }
     };
 
@@ -49,9 +48,13 @@ const OwnerLoginRegister = () => {
         e.preventDefault();
         try {
             const loginData = { email, password };
-            await dispatch(loginOwner(loginData));
-            navigate("/owner");
-            toast.success("Login Success");
+            const check = await dispatch(loginOwner(loginData));
+            if(check.payload?.status !== 200){
+                toast.error(check.payload.message)
+            }else{
+                toast.success("Login Success");
+                navigate("/owner");
+            }
         } catch (err) {
             toast.error("Login Failed");
         }

@@ -64,14 +64,14 @@ const UserCart = () => {
                 <Navbar />
                 <div className='flex flex-col gap-5 items-center'>
                     {products.map((product, index) => (
-                        <div key={index} className='flex gap-3 md:w-2/3 items-center bg-white p-4 flex-col rounded-2xl md:flex-row'>
+                        <div key={index} className='flex gap-3 md:w-2/3 items-center bg-white p-4 flex-col rounded-2xl '>
                             {/* Left Section: Product Info */}
-                            <div className='flex md:w-3/4 justify-between'>
-                                <div className='w-2/3 flex flex-col gap-5'>
-                                    <img className='w-[250px] md:w-[400px]' src={product.productImage} alt="" />
+                            <div className='flex flex-col md:flex-row md:w-3/4 justify-between'>
+                                <div className='md:w-2/3 flex flex-col gap-5'>
+                                    <img className='w-[300px] rounded-xl md:w-[400px]' src={product.productImage} alt="" />
                                 </div>
 
-                                <div className='w-1/3 md:w-2/3 flex flex-col gap-2'>
+                                <div className='w-full md:w-2/3 flex flex-col gap-2'>
                                     <h2 className='text-2xl font-bold'>{product.brand}</h2>
                                     <h2 className='text-lg italic capitalize'>{product.name}</h2>
                                     <h2 className=''>₹{product.price}</h2>
@@ -90,7 +90,7 @@ const UserCart = () => {
                                 {/* Right Section: Product Image */}
 
                             </div>
-                            <div className='w-full flex md:w-1/4 flex-col gap-3 '>
+                            <div className='w-full flex md:w-full md:flex-row flex-col gap-3 '>
                                 <button className='bg-red-500 w-full p-2 rounded-xl text-white text-lg' onClick={(e) => handleRemove(product._id, e)}>Remove</button>
                                 <button className='bg-green-500 w-full p-2 rounded-xl text-white text-lg' onClick={(e) => handleBuy(product._id,e)}>Buy</button>
                             </div>

@@ -4,9 +4,12 @@ import { useParams } from 'react-router-dom'
 import ProductPriceCalculation from '../../components/usercomponents/ProductPriceCalculation'
 import { useDispatch } from 'react-redux'
 import { createOrder } from '../../redux/slices/orderSlice'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 
 const BuyProduct = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const { id } = useParams()
   const [totalAmount, setTotalAmount] = useState(0)
@@ -20,12 +23,13 @@ const BuyProduct = () => {
         totalAmount
       }
       const check = await dispatch(createOrder(orderData))
-
-      if (check.payload?.status === 200) {
-        toast.success(check.payload.data.message)
+      console.log(check);
+      if (check.payload?.status !== 201) {
+        toast.error(check.payload.message)
       }
       else {
-        toast.error(check.payload.message)
+        toast.success("Order Placed")
+        navigate("/user/orders")
       }
     } catch (error) {
       toast.error("Something Went Wrong")
