@@ -3,10 +3,14 @@ import Navbar from '../../components/usercomponents/Navbar'
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import { userCart } from '../../redux/slices/userSlice';
+import { removeFromCart, userCart } from '../../redux/slices/userSlice';
 import { CircleMinus, CirclePlus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const UserCart = () => {
+
+    const navigate = useNavigate()
+
     const dispatch = useDispatch();
     const [products, setProducts] = useState(null)
 
@@ -18,17 +22,28 @@ const UserCart = () => {
         ok()
     }, [dispatch]);
 
-    const handleRemove = async (id,e) => {
+    const handleRemove = async (id, e) => {
         e.preventDefault()
+        try {
+            const check = await dispatch(removeFromCart(id))
+            if (check.payload?.status === 200) {
+                toast.success(check.payload.data.message)
+                window.location.reload()
+            }
+            else {
+                toast.error(check.payload.message)
+            }
+        } catch (error) {
+            toast.error("Something Went Wrong")
+        }
     }
 
-    const handleBuy = (e) => {
+    const handleBuy = (id,e) => {
         e.preventDefault()
         navigate(`/checkout/${id}`)
     }
 
-
-    if (products === null) {
+    if (products === null || products.length === 0) {
         return (
             <div className='max-w-screen flex justify-center min-h-screen'>
 
@@ -76,8 +91,8 @@ const UserCart = () => {
 
                             </div>
                             <div className='w-full flex md:w-1/4 flex-col gap-3 '>
-                                <button className='bg-red-500 w-full p-2 rounded-xl text-white text-lg' onClick={(e) => handleRemove(product._id,e)}>Remove</button>
-                                <button className='bg-green-500 w-full p-2 rounded-xl text-white text-lg' onClick={(e) => handleBuy(e)}>Buy</button>
+                                <button className='bg-red-500 w-full p-2 rounded-xl text-white text-lg' onClick={(e) => handleRemove(product._id, e)}>Remove</button>
+                                <button className='bg-green-500 w-full p-2 rounded-xl text-white text-lg' onClick={(e) => handleBuy(product._id,e)}>Buy</button>
                             </div>
                         </div>
                     ))}

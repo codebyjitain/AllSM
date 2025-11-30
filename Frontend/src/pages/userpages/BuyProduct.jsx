@@ -20,10 +20,15 @@ const BuyProduct = () => {
         totalAmount
       }
       const check = await dispatch(createOrder(orderData))
-      console.log(check);
 
+      if (check.payload?.status === 200) {
+        toast.success(check.payload.data.message)
+      }
+      else {
+        toast.error(check.payload.message)
+      }
     } catch (error) {
-
+      toast.error("Something Went Wrong")
     }
 
   }

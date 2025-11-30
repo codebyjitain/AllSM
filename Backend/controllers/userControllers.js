@@ -125,4 +125,4 @@ const removeFromCartController = async (req, res) => {
     }
 }
 
-module.exports = { userLoginController, userRegisterController, addToCartController , getCartItemsController , verifyUserController};
+module.exports = { userLoginController, userRegisterController, addToCartController , getCartItemsController , verifyUserController , removeFromCartController };

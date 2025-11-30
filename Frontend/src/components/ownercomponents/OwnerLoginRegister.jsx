@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginOwner, registerOwner } from "/src/redux/slices/ownerSlice.js";
+import { loginOwner, registerOwner } from "../../redux/slices/ownerSlice";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 

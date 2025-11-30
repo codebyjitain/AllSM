@@ -20,7 +20,7 @@ const OwnerMiddleware = ({children}) => {
             try {
                 const resultAction = await dispatch(verifyOwner(ownerToken));
                 if (verifyOwner.fulfilled.match(resultAction)) {
-                    navigate('/owner');
+                    return children
                 } else {
                     // token invalid
                     localStorage.removeItem('ownertoken');

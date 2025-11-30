@@ -67,12 +67,32 @@ const createProduct = async (req, res) => {
 // Get all products
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-        res.status(200).json(products);
-    } catch (error) {
-        console.error('Error fetching products:', error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    // page = which page, default 1
+    // limit = how many products per page, default 10
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const products = await Product.find()
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 }); // optional: latest first
+
+    const total = await Product.countDocuments();
+
+    res.status(200).json({
+        products,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit)
+    });
+
+} catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error' });
+}
+
 };
 
 // Get product by ID
@@ -114,6 +134,7 @@ const updateProduct = async (req, res) => {
             name,
             description,
             price,
+            
             otherNames: otherNamesArray,
             category,
             quantity,
@@ -125,7 +146,7 @@ const updateProduct = async (req, res) => {
         };
 
         if (productImage) {
-            updatedData.productImage = productImage;
+            updatedData.productImage = process.env.BASE_URL + '/image/' + productImage
         }
 
         const updatedProduct = await Product.findByIdAndUpdate(id, updatedData, { new: true });

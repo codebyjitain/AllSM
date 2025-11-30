@@ -1,26 +1,44 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
-    const response = await axios.get(import.meta.env.VITE_BASE_URL + '/products');
-    return response.data;
-});
+export const fetchProducts = createAsyncThunk(
+    'products/fetchProducts',
+    async ({ page, limit }, { rejectWithValue }) => {
 
-export const getProductById = createAsyncThunk('products/getProductById', async (id , {rejectWithValue}) => {
+        try {
+
+            const response = await axios.get(
+                `${import.meta.env.VITE_BASE_URL}/products?page=${page}&limit=${limit}`
+            );
+            return {
+                status: response.status,
+                data: response.data
+            };
+        } catch (error) {
+            return rejectWithValue({
+                status: error.response.status,
+                message: error.response.data.message
+            })
+        }
+    }
+);
+
+
+export const getProductById = createAsyncThunk('products/getProductById', async (id, { rejectWithValue }) => {
     try {
         const response = await axios.get(import.meta.env.VITE_BASE_URL + `/products/${id}`);
         return {
             status: response.status,
             data: response.data,
-            
+
         }
     } catch (error) {
-         return rejectWithValue({
+        return rejectWithValue({
             status: error.response.status,
             message: error.response.data.message
         })
     }
-    
+
 });
 
 export const updateProduct = createAsyncThunk('products/updateProduct', async ({ id, formData }) => {

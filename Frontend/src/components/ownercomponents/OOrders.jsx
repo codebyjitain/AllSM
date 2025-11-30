@@ -54,10 +54,10 @@ const OOrders = () => {
         <div key={order._id} className='flex flex-col gap-2 p-4'>
           <div className='bg-white rounded-xl cursor-pointer p-4'>
             <h2 className='text-lg font-bold mb-3' onClick={() => {
-              setOpenPanel(!openPanel)
+              setOpenPanel(openPanel === order._id ? null : order._id);
             }} >Order Id: {order._id} </h2>
 
-            {openPanel && (
+            {openPanel === order._id && (
               <div className='flex flex-col gap-2'>
                 <h2 >Order Date: {order.createdAt.split("T")[0]}</h2>
 
